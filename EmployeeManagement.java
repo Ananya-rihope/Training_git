@@ -14,7 +14,9 @@ public class EmployeeManagement {
             System.out.println("1. Add employee");
             System.out.println("2. Display all employees");
             System.out.println("3. Search employee by ID");
-            System.out.println("4. Exit");
+            System.out.println("4. Update employee details");
+            System.out.println("5. Delete employee");
+            System.out.println("6. Exit");
             int choice = readInt("Choose an option: ");
 
             switch (choice) {
@@ -28,11 +30,17 @@ public class EmployeeManagement {
                     searchEmployee();
                     break;
                 case 4:
+                    updateEmployee();
+                    break;
+                case 5:
+                    deleteEmployee();
+                    break;
+                case 6:
                     running = false;
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out.println("Invalid option. Please choose 1–4.");
+                    System.out.println("Invalid option. Please choose 1–6.");
             }
         }
 
@@ -80,6 +88,31 @@ public class EmployeeManagement {
         }
     }
 
+    private static void updateEmployee() {
+        int id = readInt("Enter employee ID to update: ");
+        Employee employee = employees.get(id);
+        if (employee == null) {
+            System.out.println("No employee found with ID " + id + ".");
+            return;
+        }
+
+        System.out.println("Enter the updated employee details:");
+        employee.setName(readNonEmptyLine("Name: "));
+        employee.setDepartment(readNonEmptyLine("Department: "));
+        employee.setSalary(readNonNegativeDouble("Salary: "));
+        System.out.println("Employee updated successfully.");
+    }
+
+    private static void deleteEmployee() {
+        int id = readInt("Enter employee ID to delete: ");
+        Employee removed = employees.remove(id);
+        if (removed == null) {
+            System.out.println("No employee found with ID " + id + ".");
+        } else {
+            System.out.println("Employee deleted successfully.");
+        }
+    }
+
     private static int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -121,9 +154,9 @@ public class EmployeeManagement {
 
     private static class Employee {
         private final int id;
-        private final String name;
-        private final String department;
-        private final double salary;
+        private String name;
+        private String department;
+        private double salary;
 
         private Employee(int id, String name, String department, double salary) {
             this.id = id;
@@ -140,12 +173,24 @@ public class EmployeeManagement {
             return name;
         }
 
+        private void setName(String name) {
+            this.name = name;
+        }
+
         private String getDepartment() {
             return department;
         }
 
+        private void setDepartment(String department) {
+            this.department = department;
+        }
+
         private double getSalary() {
             return salary;
+        }
+
+        private void setSalary(double salary) {
+            this.salary = salary;
         }
 
         @Override
